@@ -1,6 +1,7 @@
 package com.baifan.playsoundbutton;
 
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mImgLoading;
 
     private ObjectAnimator mObjectAnimator;
+
+    private ImageView mImgPlaySound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         mBtnPlaySound = (Button) findViewById(R.id.btn_playSound);
         mImgLoading = (ImageView) findViewById(R.id.img_loading);
+        mImgPlaySound = (ImageView) findViewById(R.id.img_play);
     }
 
     @Override
     public void onClick(View v) {
         mBtnPlaySound.setEnabled(false);
         startAnim();
+        startPlaySoundAnim();
         mHandler.sendEmptyMessageDelayed(0, 5000);
     }
 
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void stopAnim() {
         mObjectAnimator.end();
         mImgLoading.setVisibility(View.GONE);
+
+
     }
 
     private Handler mHandler = new Handler() {
@@ -71,6 +78,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void handleMessage(Message msg) {
             stopAnim();
             mBtnPlaySound.setEnabled(true);
+            mImgPlaySound.setImageResource(R.drawable.adj);
         }
     };
+
+    /**
+     * 播放音频的动画
+     */
+    private void startPlaySoundAnim(){
+        mImgPlaySound.setImageResource(R.drawable.anim_play_sound);
+        AnimationDrawable animationDrawable = (AnimationDrawable) mImgPlaySound.getDrawable();
+        animationDrawable.start();
+    }
 }
